@@ -23,22 +23,23 @@ public class GreetingController {
 	@Autowired
 	private IGreetingService greetingService;
 	
-	@GetMapping("/getGreetings")
+	@GetMapping("/greeting")
 	public ResponseEntity<List<Greeting>> getGreetings() {
 		return new ResponseEntity<>(greetingService.getGreetings(), HttpStatus.OK);
 	}
 	
-	@GetMapping("/getGreeting/{id}")
+	@GetMapping("/greeting/{id}")
 	public ResponseEntity<Greeting> getGreetingById(@PathVariable Long id ){
 		return new ResponseEntity<>(greetingService.getGreetingById(id), HttpStatus.OK);
 	}
 	
-	@PutMapping("/putGreeting")
-	public ResponseEntity<Greeting> putGreeting(@RequestParam(value="name", defaultValue="Unidentified") String name) {
-		return new ResponseEntity<>(greetingService.putGreeting(name), HttpStatus.ACCEPTED);
+	@PutMapping("/greeting/{id}")
+	public ResponseEntity<Greeting> putGreeting(@RequestParam(value="message", defaultValue="Not provided") String message, 
+			@PathVariable Long id) {
+		return new ResponseEntity<>(greetingService.putGreeting(message, id), HttpStatus.ACCEPTED);
 	}
 	
-	@PostMapping("/postGreeting")
+	@PostMapping("/greeting")
 	public ResponseEntity<Greeting> postGreeting(@RequestParam(value="firstName") Optional<String> firstName, 
 			@RequestParam(value="lastName") Optional<String> lastName) {
 		String name = "";
@@ -50,4 +51,5 @@ public class GreetingController {
 			name = "Hello World";
 		return new ResponseEntity<>(greetingService.postGreeting(name), HttpStatus.CREATED);
 	}
+	
 }

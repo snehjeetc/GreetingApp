@@ -1,6 +1,7 @@
 package com.greeting.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,11 @@ public class GreetingService implements IGreetingService{
 	@Autowired
 	private IGreetingRepository greetingRepository;
 	
-	
-
 	@Override
-	public Greeting putGreeting(String name) {
-		return new Greeting(counter.incrementAndGet(), String.format(template,  name));
+	public Greeting putGreeting(String greetingMessage, Long id) {
+		Optional<Greeting> greeting = greetingRepository.findById(id);
+		greeting.get().setGreetingMessage(greetingMessage);
+		return greetingRepository.save(greeting.get());
 	}
 
 	@Override
