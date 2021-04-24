@@ -1,8 +1,19 @@
 package com.greeting.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Greeting {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String greetingMessage;
+	
+	public Greeting() {}
 	
 	public Greeting(Long id, String greetingMessage) {
 		this.id = id;

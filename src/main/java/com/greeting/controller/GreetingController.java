@@ -1,5 +1,6 @@
 package com.greeting.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +22,9 @@ public class GreetingController {
 	@Autowired
 	private IGreetingService greetingService;
 	
-	@GetMapping("/getGreeting")
-	public ResponseEntity<Greeting> getGreeting(@RequestParam(value="firstName") Optional<String> firstName, 
-			@RequestParam(value="lastName") Optional<String> lastName) {
-		String name = "";
-		if(firstName.isPresent())
-			name += firstName.get();
-		if(lastName.isPresent())
-			name += " " + lastName.get();
-		if(name.length() == 0)
-			name = "Hello World";
-		return new ResponseEntity<>(greetingService.getGreeting(name), HttpStatus.OK);
+	@GetMapping("/getGreetings")
+	public ResponseEntity<List<Greeting>> getGreetings() {
+		return new ResponseEntity<>(greetingService.getGreetings(), HttpStatus.OK);
 	}
 	
 	@PutMapping("/putGreeting")
@@ -40,7 +33,15 @@ public class GreetingController {
 	}
 	
 	@PostMapping("/postGreeting")
-	public ResponseEntity<Greeting> postGreeting(@RequestParam(value="name") String name) {
+	public ResponseEntity<Greeting> postGreeting(@RequestParam(value="firstName") Optional<String> firstName, 
+			@RequestParam(value="lastName") Optional<String> lastName) {
+		String name = "";
+		if(firstName.isPresent())
+			name += firstName.get();
+		if(lastName.isPresent())
+			name += " " + lastName.get();
+		if(name.length() == 0)
+			name = "Hello World";
 		return new ResponseEntity<>(greetingService.postGreeting(name), HttpStatus.CREATED);
 	}
 }

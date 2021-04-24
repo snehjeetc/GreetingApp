@@ -1,20 +1,23 @@
 package com.greeting.service;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.greeting.model.Greeting;
+import com.greeting.repository.IGreetingRepository;
 
 @Service
 public class GreetingService implements IGreetingService{
 	private AtomicLong counter = new AtomicLong();
 	private String template = "Hello, %s!";
 	
-	@Override
-	public Greeting getGreeting(String name) {
-		return new Greeting(counter.incrementAndGet(), String.format(template, name));
-	}
+	@Autowired
+	private IGreetingRepository greetingRepository;
+	
+	
 
 	@Override
 	public Greeting putGreeting(String name) {
@@ -23,7 +26,13 @@ public class GreetingService implements IGreetingService{
 
 	@Override
 	public Greeting postGreeting(String name) {
-		return new Greeting(counter.incrementAndGet(), String.format(template, name));
+		Greeting greeting = new Greeting(counter.incrementAndGet(), String.format(template, name));
+		return greetingRepository.save(greeting);
+	}
+
+	@Override
+	public List<Greeting> getGreetings() {
+		return greetingRepository.findAll();
 	}
 
 }
