@@ -9,4 +9,5 @@ public interface IGreetingService {
 	Greeting getGreetingById(Long id);
 	Greeting putGreeting(String greetingMessage, Long id);
 	Greeting postGreeting(String name);
+	Greeting deleteGreeting(Long id);
 }
