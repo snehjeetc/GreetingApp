@@ -1,5 +1,7 @@
 package com.greeting.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,15 @@ public class GreetingController {
 	private IGreetingService greetingService;
 	
 	@GetMapping("/getGreeting")
-	public ResponseEntity<Greeting> getGreeting(@RequestParam(value="name", defaultValue="World") String name) {
+	public ResponseEntity<Greeting> getGreeting(@RequestParam(value="firstName") Optional<String> firstName, 
+			@RequestParam(value="lastName") Optional<String> lastName) {
+		String name = "";
+		if(firstName.isPresent())
+			name += firstName.get();
+		if(lastName.isPresent())
+			name += " " + lastName.get();
+		if(name.length() == 0)
+			name = "Hello World";
 		return new ResponseEntity<>(greetingService.getGreeting(name), HttpStatus.OK);
 	}
 	
