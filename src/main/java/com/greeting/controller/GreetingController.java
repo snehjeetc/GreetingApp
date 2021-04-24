@@ -1,32 +1,36 @@
 package com.greeting.controller;
 
-import java.util.concurrent.atomic.AtomicLong;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greeting.model.Greeting;
+import com.greeting.service.IGreetingService;
 
 @RestController
+@RequestMapping({"/", " "})
 public class GreetingController {
-	private static final String template = "Hello, %s!";
-	private static AtomicLong counter = new AtomicLong();
+	@Autowired
+	private IGreetingService greetingService;
 	
 	@GetMapping("/getGreeting")
-	public Greeting getGreeting(@RequestParam(value="name", defaultValue="World") String name) {
-		return new Greeting(counter.incrementAndGet(), String.format(template, name));
+	public ResponseEntity<Greeting> getGreeting(@RequestParam(value="name", defaultValue="World") String name) {
+		return new ResponseEntity<>(greetingService.getGreeting(name), HttpStatus.OK);
 	}
 	
 	@PutMapping("/putGreeting")
-	public Greeting putGreeting(@RequestParam(value="name", defaultValue="Unidentified") String name) {
-		return new Greeting(counter.incrementAndGet(), String.format(template, name));
+	public ResponseEntity<Greeting> putGreeting(@RequestParam(value="name", defaultValue="Unidentified") String name) {
+		return new ResponseEntity<>(greetingService.putGreeting(name), HttpStatus.ACCEPTED);
 	}
 	
 	@PostMapping("/postGreeting")
-	public Greeting postGreeting(@RequestParam(value="name") String name) {
-		return new Greeting(counter.incrementAndGet(), String.format(template, name));
+	public ResponseEntity<Greeting> postGreeting(@RequestParam(value="name") String name) {
+		return new ResponseEntity<>(greetingService.postGreeting(name), HttpStatus.CREATED);
 	}
 }
