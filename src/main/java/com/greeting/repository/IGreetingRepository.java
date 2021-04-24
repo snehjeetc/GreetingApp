@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.greeting.model.Greeting;
 
 @Repository
-public interface IGreetingRepository extends JpaRepository<Greeting, Integer> {
-
+public interface IGreetingRepository extends JpaRepository<Greeting, Long> {
 }

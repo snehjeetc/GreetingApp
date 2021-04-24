@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,11 @@ public class GreetingController {
 	@GetMapping("/getGreetings")
 	public ResponseEntity<List<Greeting>> getGreetings() {
 		return new ResponseEntity<>(greetingService.getGreetings(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/getGreeting/{id}")
+	public ResponseEntity<Greeting> getGreetingById(@PathVariable Long id ){
+		return new ResponseEntity<>(greetingService.getGreetingById(id), HttpStatus.OK);
 	}
 	
 	@PutMapping("/putGreeting")
